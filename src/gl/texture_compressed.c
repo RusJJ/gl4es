@@ -248,7 +248,7 @@ void gl4es_glCompressedTexImage2D(GLenum target, GLint level, GLenum internalfor
             } else {
                 pixels = uncompressDXTc(width, height, internalformat, imageSize, transparent0, &simpleAlpha, &complexAlpha, datab);
             }
-            if(srgb)
+            if(srgb && !hardext.srgbt)
                 pixel_srgb_inplace(pixels, width, height);
             // automaticaly reduce the pixel size
             half=pixels;
@@ -289,6 +289,21 @@ void gl4es_glCompressedTexImage2D(GLenum target, GLint level, GLenum internalfor
         if(level && bound && bound->valid)
             new_intformat = (bound->format==GL_RGB)?GL_COMPRESSED_RGB:GL_COMPRESSED_RGBA;
         DBG(printf(" => internalformat=%s (Alpha=%d/%d), %dx%d %s/%s\n\n", PrintEnum(new_intformat), simpleAlpha, complexAlpha, width, height, PrintEnum(format), PrintEnum(type));)
+        
+        if( srgb && hardext.srgbt )
+        {
+            if( format == GL_RGB )
+            {
+                format = GL_SRGB_EXT;
+                new_intformat = GL_SRGB_EXT;
+            }
+            else if( format == GL_RGBA )
+            {
+                format = GL_SRGB_ALPHA_EXT;
+                new_intformat = GL_SRGB_ALPHA_EXT;
+            }
+        }
+        
         gl4es_glTexImage2D(target, level, new_intformat, width, height, border, format, type, half);
         // re-update bounded texture info, but not format and type
         bound->alpha = (simpleAlpha||complexAlpha)?1:0;
@@ -399,7 +414,7 @@ void gl4es_glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, 
         if (oldalign!=1) gl4es_glPixelStorei(GL_UNPACK_ALIGNMENT, oldalign);
         #else
         DBG(printf(" [%d] => (Alpha=%d/%d), %dx%d %s/%s\n\n", bound->glname, simpleAlpha, complexAlpha, width, height, PrintEnum(bound->format), PrintEnum(bound->type));)
-        gl4es_glTexSubImage2D(target, level, xoffset, yoffset, width, height, GL_RGBA, GL_UNSIGNED_BYTE, half);
+        gl4es_glTexSubImage2D(target, level, xoffset, yoffset, width, height, srgb?GL_SRGB_ALPHA_EXT:GL_RGBA, GL_UNSIGNED_BYTE, half);
         #endif
         if (half!=pixels)
             free(half);
