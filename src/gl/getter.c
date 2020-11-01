@@ -131,17 +131,17 @@ void BuildExtensionsList() {
                 "GL_EXT_draw_elements_base_vertex "
                 "GL_ARB_map_buffer_range "
                 "GL_NV_blend_square "
-				"GL_EXT_texture_sRGB_decode " // sRGB
+                "GL_EXT_texture_sRGB_decode " // sRGB
 //                "GL_EXT_blend_logic_op "
-				);
+                );
         if(!globals4es.notexrect)
             strcat(extensions, "GL_ARB_texture_rectangle ");
         if(globals4es.vabgra)
             strcat(extensions, "GL_ARB_vertex_array_bgra ");
-		if(globals4es.npot>=1)
-			strcat(extensions, "GL_APPLE_texture_2D_limited_npot ");
-		if(globals4es.npot>=2)
-			strcat(extensions, "GL_ARB_texture_non_power_of_two ");
+        if(globals4es.npot>=1)
+            strcat(extensions, "GL_APPLE_texture_2D_limited_npot ");
+        if(globals4es.npot>=2)
+            strcat(extensions, "GL_ARB_texture_non_power_of_two ");
         if(hardext.blendcolor)
             strcat(extensions, "GL_EXT_blend_color ");
         if(hardext.blendminmax)
@@ -249,16 +249,16 @@ const GLubyte *gl4es_glGetString(GLenum name) {
         case GL_EXTENSIONS:
             BuildExtensionsList();
             return glstate->extensions;
-		case GL_VENDOR:
-			return (GLubyte *)"ptitSeb";
-		case GL_RENDERER:
-			return (GLubyte *)"GL4ES wrapper";
-		case GL_SHADING_LANGUAGE_VERSION:
+        case GL_VENDOR:
+            return (GLubyte *)"ptitSeb";
+        case GL_RENDERER:
+            return (GLubyte *)"GL4ES wrapper";
+        case GL_SHADING_LANGUAGE_VERSION:
             if(globals4es.gl==21)
             return (GLubyte *)"1.20 via gl4es";
             else if(globals4es.gl==20)
                 return (GLubyte *)"1.10 via gl4es";
-			return (GLubyte *)"";
+            return (GLubyte *)"";
         case GL_PROGRAM_ERROR_STRING_ARB:
             return (GLubyte*)glstate->glsl->error_msg;
         default:
@@ -266,7 +266,7 @@ const GLubyte *gl4es_glGetString(GLenum name) {
                 LOAD_GLES(glGetString);
                 return gles_glGetString(name-0x10000);
             }
-			errorShim(GL_INVALID_ENUM);
+            errorShim(GL_INVALID_ENUM);
             return (GLubyte*)"";
     }
 }
@@ -289,7 +289,7 @@ int gl4es_commonGet(GLenum pname, GLfloat *params) {
             *params = 1024;
             break;
         case GL_MAX_ELEMENTS_VERTICES:
-			*params = 4096;
+            *params = 4096;
             break;
         case GL_NUM_EXTENSIONS:
             BuildExtensionsList();
@@ -311,43 +311,43 @@ int gl4es_commonGet(GLenum pname, GLfloat *params) {
             *params = glstate->texture.unpack_align;
             break;
         case GL_UNPACK_ROW_LENGTH:	
-			*params = glstate->texture.unpack_row_length;
-			break;
+            *params = glstate->texture.unpack_row_length;
+            break;
         case GL_UNPACK_SKIP_PIXELS:
-			*params = glstate->texture.unpack_skip_pixels;
-			break;
+            *params = glstate->texture.unpack_skip_pixels;
+            break;
         case GL_UNPACK_SKIP_ROWS:
-			*params = glstate->texture.unpack_skip_rows;
-			break;
+            *params = glstate->texture.unpack_skip_rows;
+            break;
         case GL_UNPACK_LSB_FIRST:
-			*params = glstate->texture.unpack_lsb_first;
-			break;
+            *params = glstate->texture.unpack_lsb_first;
+            break;
         case GL_UNPACK_IMAGE_HEIGHT:
             *params = glstate->texture.unpack_image_height;
             break;
         case GL_PACK_ROW_LENGTH:	
-			*params = glstate->texture.pack_row_length;
-			break;
+            *params = glstate->texture.pack_row_length;
+            break;
         case GL_PACK_SKIP_PIXELS:
-			*params = glstate->texture.pack_skip_pixels;
-			break;
+            *params = glstate->texture.pack_skip_pixels;
+            break;
         case GL_PACK_SKIP_ROWS:
-			*params = glstate->texture.pack_skip_rows;
-			break;
+            *params = glstate->texture.pack_skip_rows;
+            break;
         case GL_PACK_LSB_FIRST:
-			*params = glstate->texture.pack_lsb_first;
-			break;
+            *params = glstate->texture.pack_lsb_first;
+            break;
         case GL_PACK_IMAGE_HEIGHT:
             *params = glstate->texture.pack_image_height;
             break;
         case GL_UNPACK_SWAP_BYTES:
         case GL_PACK_SWAP_BYTES:
             //Fake, *TODO* ?
-			*params = 0;
-			break;
+            *params = 0;
+            break;
         case GL_ZOOM_X:
-	        *params = glstate->raster.raster_zoomx;
-	        break;
+            *params = glstate->raster.raster_zoomx;
+            break;
         case GL_ZOOM_Y:
             *params = glstate->raster.raster_zoomy;
             break;
@@ -361,12 +361,12 @@ int gl4es_commonGet(GLenum pname, GLfloat *params) {
         case GL_BLUE_SCALE:
         case GL_ALPHA_SCALE:
             *params = glstate->raster.raster_scale[(pname-GL_GREEN_SCALE)/2+1];
-	    break;
+        break;
         case GL_GREEN_BIAS:
         case GL_BLUE_BIAS:
         case GL_ALPHA_BIAS:
-    	    *params = glstate->raster.raster_bias[(pname-GL_GREEN_BIAS)/2+1];
-	    break;
+            *params = glstate->raster.raster_bias[(pname-GL_GREEN_BIAS)/2+1];
+        break;
         case GL_MAP_COLOR:
             *params = glstate->raster.map_color;
             break;

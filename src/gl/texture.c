@@ -309,15 +309,15 @@ static void *swizzle_texture(GLsizei width, GLsizei height,
                     check = 0;
                 }
                 break;
-            case GL_SRGB_ALPHA_EXT:
-                convert = 0;
-                check = 0;
-                dest_format = GL_SRGB_ALPHA_EXT;
-                break;
             case GL_SRGB_EXT:
                 convert = 0;
                 check = 0;
                 dest_format = GL_SRGB_EXT;
+                break;
+            case GL_SRGB_ALPHA_EXT:
+                convert = 0;
+                check = 0;
+                dest_format = GL_SRGB_ALPHA_EXT;
                 break;
             // vvvvv all this are internal formats, so it should not happens
             case GL_RGB5:
@@ -664,11 +664,11 @@ GLenum swizzle_internalformat(GLenum *internalformat, GLenum format, GLenum type
             break;
         case GL_SRGB_EXT:
             ret = GL_SRGB_EXT;
-			sret = GL_SRGB_EXT;
+            sret = GL_SRGB_EXT;
             break;
         case GL_SRGB_ALPHA_EXT:
             ret = GL_SRGB_ALPHA_EXT;
-			sret = GL_SRGB_ALPHA_EXT;
+            sret = GL_SRGB_ALPHA_EXT;
             break;
         case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:  // not good...
         case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:  // not good, but there is no DXT3 compressor
@@ -1429,13 +1429,10 @@ void gl4es_glTexImage2D(GLenum target, GLint level, GLint internalformat,
                 {
                     format = backupformat;
                 }
-                else
-                {
-                    errorGL();
-                    DBG(CheckGLError(1);)
-                }
+                errorGL();
                 gles_glTexImage2D(rtarget, level, format, width, height, border,
                                 format, type, pixels);
+                DBG(CheckGLError(1);)
             }
             // check if base_level is set... and calculate lower level mipmap
             if(bound->base_level == level && !(bound->max_level==level && level==0)) {
