@@ -45,6 +45,8 @@ static const colorlayout_t *get_color_map(GLenum format) {
         map(GL_RG,  0,  1, -1, -1, 0);
         map(GL_RGBA,0,  1, 2, 3, 3);
         map(GL_RGB, 0,  1, 2, -1, 2);
+        map(GL_SRGB_ALPHA,0,  1, 2, 3, 3);
+        map(GL_SRGB, 0,  1, 2, -1, 2);
         map(GL_BGRA,2,  1, 0, 3, 3);
         map(GL_BGR, 2,  1, 0, -1, 2);
 		map(GL_LUMINANCE_ALPHA, 0, 0, 0, 1, 1);

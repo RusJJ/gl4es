@@ -205,7 +205,7 @@ void gl4es_glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum 
 void gl4es_glGetTexImage(GLenum target, GLint level, GLenum format, GLenum type, GLvoid * img) {
     DBG(printf("glGetTexImage(%s, %i, %s, %s, %p)\n", PrintEnum(target), level, PrintEnum(format), PrintEnum(type), img);)
     FLUSH_BEGINEND;
-    const GLuint itarget = what_target(target);    
+    const GLuint itarget = what_target(target);
 
     realize_bound(glstate->texture.active, target);
        
