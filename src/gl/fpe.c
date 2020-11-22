@@ -733,7 +733,7 @@ void fpe_glNormalPointer(GLenum type, GLsizei stride, const GLvoid *pointer) {
     glstate->vao->vertexattrib[ATT_NORMAL].stride = stride;
     glstate->vao->vertexattrib[ATT_NORMAL].pointer = pointer;
     glstate->vao->vertexattrib[ATT_NORMAL].divisor = 0;
-    glstate->vao->vertexattrib[ATT_NORMAL].normalized = GL_FALSE;
+    glstate->vao->vertexattrib[ATT_NORMAL].normalized = (type==GL_FLOAT)?GL_FALSE:GL_TRUE;
     glstate->vao->vertexattrib[ATT_NORMAL].real_buffer = 0;
     glstate->vao->vertexattrib[ATT_NORMAL].real_pointer = 0;
 }
@@ -1531,6 +1531,7 @@ void realize_blitenv(int alpha) {
         gles_glUseProgram(glstate->gleshard->program);
     }
     // set VertexAttrib if needed
+    unboundBuffers();
     for(int i=0; i<hardext.maxvattrib; i++) {
         vertexattrib_t *v = &glstate->gleshard->vertexattrib[i];
         // enable / disable Array if needed
