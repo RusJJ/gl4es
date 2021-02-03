@@ -22,19 +22,11 @@ static int comments = 1;
 
 #define ShadAppend(S) shad = Append(shad, &shad_cap, S)
 
-#ifdef AMIGA
-//                           2D   Rectangle    3D   CubeMap  Stream
-const char* texvecsize[] = {"vec2", "vec2", "vec2", "vec3", "vec2"};
-const char* texxyzsize[] = {"st", "st",    "st",  "stp",   "st"};
-//                          2D              Rectangle      3D          CubeMap          Stream
-const char* texname[] = {"texture2D", "texture2D", "texture2D", "textureCube", "textureStreamIMG"};    // textureRectange and 3D are emulated with 2D
-#else
 //                           2D   Rectangle    3D   CubeMap  Stream
 const char* texvecsize[] = {"vec4", "vec2", "vec2", "vec3", "vec2"};
 const char* texxyzsize[] = {"stpq", "st",    "st",  "stp",   "st"};
 //                          2D              Rectangle      3D          CubeMap          Stream
 const char* texname[] = {"texture2DProj", "texture2D", "texture2D", "textureCube", "textureStreamIMG"};    // textureRectange and 3D are emulated with 2D
-#endif
 const char* texnoproj[] = {"texture2D", "texture2D", "texture2D", "textureCube", "textureStreamIMG"};    // textureRectange and 3D are emulated with 2D
 const char* texsampler[] = {"sampler2D", "sampler2D", "sampler2D", "samplerCube", "samplerStreamIMG"};
 int texnsize[] = {2, 2, 3, 3, 2};
@@ -781,7 +773,7 @@ const char* const* fpe_VertexShader(shaderconv_need_t* need, fpe_state_t *state)
         #if 0    // vertex fog
         char fogsrc[50];
         if(fogsource==FPE_FOG_SRC_COORD)
-            strcpy(fogsrc, "FogCoord");
+            strcpy(fogsrc, "gl_FogCoord");
         else switch(fogdist) {
             case FPE_FOG_DIST_RADIAL: strcpy(fogsrc, "length(vertex.xyz)"); break;
             case FPE_FOG_DIST_PLANE: strcpy(fogsrc, "vertex.z"); break;
@@ -802,7 +794,7 @@ const char* const* fpe_VertexShader(shaderconv_need_t* need, fpe_state_t *state)
         }
         #else   // pixel fog
         if(fogsource==FPE_FOG_SRC_COORD)
-            sprintf(buff, "FogSrc = FogCoord;\n");
+            sprintf(buff, "FogSrc = gl_FogCoord;\n");
         else switch(fogdist) {
             case FPE_FOG_DIST_RADIAL: sprintf(buff, "FogSrc = vertex.xyz;\n"); break;
             case FPE_FOG_DIST_PLANE:
@@ -907,10 +899,6 @@ const char* const* fpe_FragmentShader(shaderconv_need_t* need, fpe_state_t *stat
             }
         }
     }
-    /*if(fog && fogsource==FPE_FOG_SRC_COORD) {
-        ShadAppend("varying float FogCoord;\n");
-        headers++;
-    }*/
     // textures coordinates
     for (int i=0; i<hardext.maxtex; i++) {
         int t = state->texture[i].textype;
